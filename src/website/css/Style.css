@@ -1,0 +1,53 @@
+/* Reset des marges et paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Style de l'en-tête */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+}
+
+/* Style du nom de la marque */
+.brand h1 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Style de la barre de navigation */
+nav ul {
+    display: flex;
+    list-style-type: none;
+}
+
+nav ul li {
+    margin-left: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+/* Effet au survol pour les liens */
+nav ul li a:hover {
+    color: #ff6347; /* Couleur au survol */
+}
+
+/* Style général de la page */
+main {
+    padding: 20px;
+}
+
+/* Style pour chaque section */
+section {
+    margin-bottom: 20px;
+}
