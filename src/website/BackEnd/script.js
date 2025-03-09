@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let selectedFile = null;  // Store the file globally
 
   videoInput.addEventListener("change", function (event) {
-    event.preventDefault();  // Stop the page from reloading
+    event.preventDefault();  // Stop page reload
 
     selectedFile = event.target.files[0];  // Store the selected file globally
 
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   processButton.addEventListener("click", function (event) {
-    event.preventDefault();  // Stop default button behavior
+    event.preventDefault();  // Prevent unexpected form submission
 
     if (!selectedFile) {
       alert("Veuillez sélectionner un fichier vidéo.");
@@ -33,7 +33,11 @@ document.addEventListener("DOMContentLoaded", function () {
       body: formData, // Correct way to send file data
     })
       .then((response) => response.json())
-      .then((data) => console.log("Server Response:", data))
-      .catch((error) => console.log("Error:", error));
+      .then((data) => {
+        console.log("Server Response:", data);
+      })
+      .catch((error) => {
+        console.log("Error:", error);
+      });
   });
 });

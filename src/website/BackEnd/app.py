@@ -19,6 +19,8 @@ def upload_video():
 
     file_path = f"{UPLOAD_FOLDER}/{file.filename}"
     file.save(file_path)
+    
+    
 
     print(f"File received: {file.filename}, saved to {file_path}")
 
