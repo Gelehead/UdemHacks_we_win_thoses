@@ -3,35 +3,37 @@ document.addEventListener("DOMContentLoaded", function () {
   const videoPlayer = document.getElementById("videoPlayer");
   const processButton = document.getElementById("processButton");
 
+  let selectedFile = null;  // Store the file globally
+
   videoInput.addEventListener("change", function (event) {
-    const file = event.target.files[0];
-    let base64String = "";
-    if (file) {
-      const url = URL.createObjectURL(file);
+    event.preventDefault();  // Stop the page from reloading
+
+    selectedFile = event.target.files[0];  // Store the selected file globally
+
+    if (selectedFile) {
+      const url = URL.createObjectURL(selectedFile);
       videoPlayer.src = url;
       processButton.disabled = false;
-      const reader = new FileReader();
-      reader.onloadend = function () {
-        // Le résultat est une URL de données, on prend la partie après la virgule
-        base64String = reader.result.split(",")[1];
-        console.log(base64String); // Affiche la chaîne Base64
-      };
     }
-    a = fetch("http://127.0.0.1:5000", {
-      method: "POST",
-      body: JSON.stringify({ file: file }),
-      headers: { "Content-Type": "multipart/form-data" },
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.log(error));
   });
 
-  processButton.addEventListener("click", function () {
-    const file = videoInput.files[0];
-    if (file) {
-      alert("Lancement du script pour traiter la vidéo : " + file.name);
-      // Ici, tu pourras appeler ton vrai script plus tard
+  processButton.addEventListener("click", function (event) {
+    event.preventDefault();  // Stop default button behavior
+
+    if (!selectedFile) {
+      alert("Veuillez sélectionner un fichier vidéo.");
+      return;
     }
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    fetch("http://127.0.0.1:5000/upload", {
+      method: "POST",
+      body: formData, // Correct way to send file data
+    })
+      .then((response) => response.json())
+      .then((data) => console.log("Server Response:", data))
+      .catch((error) => console.log("Error:", error));
   });
 });
