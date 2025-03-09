@@ -15,19 +15,11 @@ def upload_form():
     return render_template('upload.html')
 
 @app.route('/', methods=['POST'])
-def upload_file():
-    if 'file' not in request.files:
-        return redirect(request.url)
-    file = request.files['file']
-    if file.filename == '':
-        return redirect(request.url)
-    if file and allowed_file(file.filename):
-        filename = file.filename
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        return redirect(url_for('upload_form', filename=filename))
-    return redirect(request.url)
+def received_video():
+    return request.get_data()
+    
 
 if __name__ == "__main__":
     if not os.path.exists(UPLOAD_FOLDER):
         os.makedirs(UPLOAD_FOLDER)
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(port=5000, debug=True)
