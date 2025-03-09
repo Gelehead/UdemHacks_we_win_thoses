@@ -54,4 +54,4 @@ def get_data(filepath):
     
     return step_count, peak_indices, distances
     
-print(get_data("test3.json"))
+print(get_data("output.json"))
