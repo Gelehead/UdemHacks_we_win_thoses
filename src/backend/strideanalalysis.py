@@ -17,7 +17,6 @@ def get_distances(filepath):
     i = 0
     for frame, landmark in data.items():
         i += 1
-        print (i, landmark[31], landmark[32])
 
         landmark31 = landmark[31]
         landmark32 = landmark[32]
@@ -72,6 +71,7 @@ def find_max_distance(distances_array):
 # step
 def get_data(filepath):
     distances_array = get_distances(filepath)
+    print(distances_array)
     maximums = find_max_distance(distances_array)
     step_count = len(maximums)
     step_lenght = []
@@ -79,3 +79,4 @@ def get_data(filepath):
         step_lenght.append(distances_array[i])
     return [step_count, step_lenght]
     
+print(get_data("test3.json"))
