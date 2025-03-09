@@ -66,6 +66,7 @@ def main():
     # Calculate ground time from the provided JSON file
     ground_time = calculate_ground_time_from_json(args.json_file)
     
+    return ground_time
     # Output the result in JSON format
     ##print(json.dumps(ground_time, indent=4))
 
