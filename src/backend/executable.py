@@ -39,6 +39,11 @@ def analyze_video(video_path, output_dir="."):
         filtered_json_path = os.path.join(output_dir, f"{video_filename}_filtered.json")
         with open(filtered_json_path, 'w') as f:
             json.dump(filtered_data, f, indent=4)
+            
+            
+        print("bbbbbbbbbbbbbbbbb")
+        print("bbbbbbbbbbbbbbbbb")
+        print("bbbbbbbbbbbbbbbbb")
 
         # 3. Stride analysis
         step_count, peak_indices, distances = get_data(filtered_json_path)

@@ -58,5 +58,3 @@ def get_data(filepath):
     avg_left = list(map(lambda x : normalizing_factor_left, left_group)) """
     
     return step_count, peak_list, distances
-    
-print(get_data("output.json"))

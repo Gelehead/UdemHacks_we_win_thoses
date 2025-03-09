@@ -8,6 +8,7 @@ backend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../ba
 sys.path.insert(0, backend_path)
 
 from executable import analyze_video
+from test_backend import execute
 
 output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../out"))
 
@@ -32,9 +33,20 @@ def upload_video():
     
     results = analyze_video(file_path, output_path)
 
+    print("aksjcaskjcnaskjc")
+    print("aksjcaskjcnaskjc")
+    print("aksjcaskjcnaskjc")
+    
+    print(execute( " -- asjcnasljcn"))
+        
+    print(results)
+
+    print("aksjcaskjcnaskjc")
+    print("aksjcaskjcnaskjc")
+
     print(f"File received: {file.filename}, saved to {file_path}")
 
-    return jsonify({"message": "File uploaded successfully", "filename": file.filename})
+    return results
 
 
 if __name__ == "__main__":
