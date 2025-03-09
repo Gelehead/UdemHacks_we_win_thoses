@@ -1,5 +1,7 @@
 import json
 import math
+import numpy as np
+from scipy.signal import find_peaks
 
 def calculate_distance(landmark1, landmark2):
     """Calculates the Euclidean distance between two landmarks."""
@@ -8,7 +10,7 @@ def calculate_distance(landmark1, landmark2):
 
     return math.sqrt((x2 - x1)**2 + (y2 - y1)**2 + (z2 - z1)**2)
 
-def get_distances(filepath):
+def get_max_distances(filepath):
     """Reads the JSON file and calculates the distance between landmarks 31 and 32 for each frame."""
     with open(filepath, 'r') as f:
         data = json.load(f)
@@ -25,58 +27,31 @@ def get_distances(filepath):
             distances.append(distance)
         else:
             distances.append(None) # Handle cases where a landmark is missing
-
-    return distances
-
-# Example usage
-#filepath = r"c:\Users\thoml\UdemHacks_we_win_thoses\src\backend\pose_landmarks.json"
-
-# distances_array = get_distances(filepath)
-
-# returns the frames of the max stride lenght
-def find_max_distance(distances_array):
-    maximums = []
-    climbin = False
-    for i in range(1, len(distances_array)):
-        first = distances_array[i-1]
-        second = distances_array[i]
-
-        if first is not None and second is not None:
-            if max(first,second) == first:
-                maximums.append(i-1)
-                climbin = False
-            else:
-                climbin = True
-
-    sum = 0
-    for i in range(1,len(maximums)):
-        sum += maximums[i] - maximums[i-1]
-    average = sum / len(maximums)
+            
+    peaks, _ = find_peaks(np.array(distances), prominence=0.01)
     
-    temp = maximums.copy()
+    return peaks, distances
 
-    for i in range(1,len(maximums)):
-        if (maximums[i] - maximums[i-1]) < average * 0.25:
-            if i-1 == 0:
-                temp = temp[1:]
-            elif i == len(maximums):
-                temp = temp[:-1]
-            else:
-                temp = temp[:i-1] + [(temp[i] - temp[i-1]) / 2] + temp[i+1:]
-    return temp
-
-# Example usage:
-# this function takes in the filepath (readable to open()) and outputs 
-# a table containing the step count and an array containg the lenght of each 
-# step
 def get_data(filepath):
-    distances_array = get_distances(filepath)
-    print(distances_array)
-    maximums = find_max_distance(distances_array)
-    step_count = len(maximums)
-    step_lenght = []
-    for i in maximums:
-        step_lenght.append(distances_array[i])
-    return [step_count, step_lenght]
+    """ returns: step count, peak indices and distances """
+    
+    
+    peak_indices, distances = get_max_distances(filepath)
+    step_count = len(peak_indices)
+    
+    # every other thing here can be infered based on returned variables
+    # leaving code here for lazy people
+    """left_group = list(peak_indices[i] for i in range(0, step_count, 2))
+    right_group = list(peak_indices[i] for i in range(1, step_count, 2))
+    
+    overall_avg = sum(distances) / step_count
+    
+    normalizing_factor_left = overall_avg / (sum(left_group) / len(left_group))
+    normalizing_factor_right = overall_avg / (sum(right_group) / len(right_group))
+    
+    avg_right = list(map(lambda x : normalizing_factor_right, right_group))
+    avg_left = list(map(lambda x : normalizing_factor_left, left_group)) """
+    
+    return step_count, peak_indices, distances
     
 print(get_data("test3.json"))
