@@ -38,6 +38,9 @@ def get_data(filepath):
     
     peak_indices, distances = get_max_distances(filepath)
     step_count = len(peak_indices)
+    step_length = []
+    for i in peak_indices:
+        step_length.append(distances[i])
     
     # every other thing here can be infered based on returned variables
     # leaving code here for lazy people
@@ -52,6 +55,6 @@ def get_data(filepath):
     avg_right = list(map(lambda x : normalizing_factor_right, right_group))
     avg_left = list(map(lambda x : normalizing_factor_left, left_group)) """
     
-    return step_count, peak_indices, distances
+    return step_count, step_length
     
 print(get_data("output.json"))
