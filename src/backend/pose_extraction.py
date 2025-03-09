@@ -6,6 +6,7 @@ import json
 import sys
 import numpy as np
 from collections import deque
+import os
 
 # Initialize MediaPipe Pose
 mp_pose = mp.solutions.pose
@@ -36,9 +37,19 @@ def extract_pose_landmarks(frame, pose):
 
 def process_video(video_path, output_json_path, filters):
     """Processes video, extracts pose landmarks, and applies smoothing."""
+    
+    img = cv2.imread(video_path)
+    if img is None:
+        print(f"Error: Unable to read the file at {video_path}")
+    else:
+        print(f"File successfully loaded at {video_path}")
 
     cap = cv2.VideoCapture(video_path)
     frames, landmarks_list = [], []
+    
+    print("")
+    print("cccccccccccccccc")
+    print("")
 
     with mp_pose.Pose(static_image_mode=False, min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
         while True:

@@ -3,6 +3,7 @@ import json
 from pose_extraction import process_video
 from strideanalalysis import get_data
 from noLandmarks import filter_consecutive_frames, load_json
+import time
 import numpy as np
 
 
@@ -25,8 +26,12 @@ def analyze_video(video_path, output_dir="."):
     try:
         # Extract filename without extension
         video_filename = os.path.splitext(os.path.basename(video_path))[0]
-        json_output_path = os.path.join(output_dir, f"/json/{video_filename}.json")
-        video_output_path = os.path.join(output_dir, f"/videos/{video_filename}.json")
+        json_output_path = os.path.join(output_dir, "json", f"{video_filename}.json")
+        video_output_path = os.path.join(output_dir, "videos", f"{video_filename}.json")
+
+        print("")
+        print("bbbbbbbbbbbbbbbbb")
+        print("")
 
         # 1. Pose landmark extraction
         process_video(video_path, video_output_path, "00111")  # Using default filters
@@ -40,10 +45,6 @@ def analyze_video(video_path, output_dir="."):
         with open(filtered_json_path, 'w') as f:
             json.dump(filtered_data, f, indent=4)
             
-            
-        print("bbbbbbbbbbbbbbbbb")
-        print("bbbbbbbbbbbbbbbbb")
-        print("bbbbbbbbbbbbbbbbb")
 
         # 3. Stride analysis
         step_count, peak_indices, distances = get_data(filtered_json_path)

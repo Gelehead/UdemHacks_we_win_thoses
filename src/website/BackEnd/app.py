@@ -14,7 +14,7 @@ output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../
 
 
 app = Flask(__name__)
-UPLOAD_FOLDER = output_path + "/videos"
+UPLOAD_FOLDER = output_path
 ALLOWED_EXTENSIONS = {'mp4', 'mov', 'avi'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -29,24 +29,19 @@ def upload_video():
         return jsonify({"error": "No selected file"}), 400
 
     file_path = f"{UPLOAD_FOLDER}/{file.filename}"
+    
+    # Save the file first
     file.save(file_path)
     
-    results = analyze_video(file_path, output_path)
+    # Check if the file exists after saving it
+    if not os.path.exists(file_path):
+        return jsonify({"error": "File not saved properly"}), 400
 
-    print("aksjcaskjcnaskjc")
-    print("aksjcaskjcnaskjc")
-    print("aksjcaskjcnaskjc")
-    
-    print(execute( " -- asjcnasljcn"))
-        
-    print(results)
+    print(f"File received: {file.filename}, saved to {file_path}", flush=True)
 
-    print("aksjcaskjcnaskjc")
-    print("aksjcaskjcnaskjc")
-
-    print(f"File received: {file.filename}, saved to {file_path}")
-
-    return results
+    # Now call your analysis function
+    result = analyze_video(UPLOAD_FOLDER, f"{UPLOAD_FOLDER}/{"json"}/{file.filename}")
+    return jsonify(result)
 
 
 if __name__ == "__main__":
