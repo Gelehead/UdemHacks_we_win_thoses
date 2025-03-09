@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const videoPlayer = document.getElementById("videoPlayer");
   const processButton = document.getElementById("processButton");
   const resultDiv = document.getElementById("result");
+  const animationDiv = document.getElementById("animation");
 
   let selectedFile = null;  // Store the file globally
 
@@ -28,7 +29,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Show loading indicator
     if (resultDiv) {
-      resultDiv.innerHTML = "Processing video, please wait...";
+      resultDiv.innerHTML = "<p>Processing video, please wait...</p>";
+    }
+    
+    // Clear animation div
+    if (animationDiv) {
+      animationDiv.innerHTML = "";
     }
     
     // Disable process button while processing
@@ -53,12 +59,42 @@ document.addEventListener("DOMContentLoaded", function () {
         
         // Display the results
         if (resultDiv) {
-          resultDiv.innerHTML = `
-            <h3>Analysis Results:</h3>
-            <p>Step Count: ${data.step_count}</p>
-            <p>Peak Indices: ${data.peak_indices ? data.peak_indices.length : 0} points detected</p>
-            <p>Distances: ${data.distances ? data.distances.length : 0} measurements</p>
+          let resultHTML = `<h3>Analysis Results:</h3>`;
+          
+          if (data.error) {
+            resultHTML += `<p class="error">Error: ${data.error}</p>`;
+          } else {
+            resultHTML += `
+              <p><strong>Step Count:</strong> ${data.step_count}</p>
+              <p><strong>Peak Indices:</strong> ${data.peak_indices ? data.peak_indices.length : 0} points detected</p>
+              <p><strong>Distances:</strong> ${data.distances ? data.distances.length : 0} measurements</p>
+            `;
+          }
+          
+          resultDiv.innerHTML = resultHTML;
+        }
+        
+        // Display the animation if available
+        if (animationDiv && data.animation_url) {
+          const baseUrl = "http://127.0.0.1:5000";
+          const animationUrl = baseUrl + data.animation_url;
+          
+          animationDiv.innerHTML = `
+            <h3>Animation Output:</h3>
+            <video id="animationPlayer" controls width="640" height="480">
+              <source src="${animationUrl}" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <p>
+              <a href="${animationUrl}" download class="download-btn">Download Animation</a>
+            </p>
           `;
+          
+          // Play the animation automatically
+          const animationPlayer = document.getElementById("animationPlayer");
+          if (animationPlayer) {
+            animationPlayer.play().catch(e => console.log("Auto-play prevented:", e));
+          }
         }
         
         // Re-enable the process button

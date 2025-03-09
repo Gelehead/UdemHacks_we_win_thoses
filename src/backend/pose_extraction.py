@@ -35,15 +35,12 @@ def extract_pose_landmarks(frame, pose):
 
     return frame, black_frame, frame_landmarks
 
-def process_video(video_path, output_json_path, filters):
+def process_video(video_path, output_json_path, filters, return_frames=False):
     """Processes video, extracts pose landmarks, and applies smoothing."""
     cap = cv2.VideoCapture(video_path)
     frames, landmarks_list = [], []
+    black_frame_list = [] if return_frames else None
     
-    print("")
-    print("cccccccccccccccc")
-    print("")
-
     with mp_pose.Pose(static_image_mode=False, min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
         while True:
             ret, frame = cap.read()
@@ -51,6 +48,8 @@ def process_video(video_path, output_json_path, filters):
                 break
 
             frame, black_frame, landmark = extract_pose_landmarks(frame, pose)
+            
+            if return_frames : black_frame_list.append(black_frame.copy())
 
             landmarks_list.append(landmark)
             frames.append(black_frame)
@@ -69,6 +68,7 @@ def process_video(video_path, output_json_path, filters):
     
     print(f"Pose landmarks data saved to {output_json_path}")
 
+    if return_frames : return black_frame_list, frames
     return frames
 
 if __name__ == "__main__":
