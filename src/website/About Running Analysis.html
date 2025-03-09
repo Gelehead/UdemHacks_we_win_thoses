@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Import et Traitement Vidéo</title>
-    <link rel="stylesheet" type="text/css" href="src/website/css/Style.css">
+    <link rel="stylesheet" type="text/css" href="css/Style.css">
+    <script src="BackEnd/script.js"></script>
     <script src="src/website/BackEnd/"></script>
 </head>
 <body>
@@ -13,6 +14,46 @@
             <h1 class="section">Running analysis</h1>
         </div>
     </header>
+    <div class="container">
+        <section class="section">
+          <div class="section-content">
+            <h2>1. Problèmes</h2>
+            <p>Certaines maladies et conditions peuvent affecter la capacité à courir correctement ou entraîner une déformation de la posture. Parmi ces problèmes, on retrouve des troubles articulaires comme <strong>l'arthrose</strong>, qui entraîne des douleurs dans les genoux, les hanches ou les chevilles, rendant la course difficile. La <strong>scoliose</strong> peut aussi provoquer des déséquilibres posturaux en affectant la colonne vertébrale. D’autres troubles, comme des <strong>problèmes de pied</strong> (pied plat, hallux valgus), ou des conditions <strong>neuromusculaires</strong> (dystrophie musculaire, sclérose en plaques) peuvent altérer la coordination et la posture. En outre, des maladies comme la <strong>paresis</strong> ou des blessures musculaires peuvent réduire la force musculaire et perturber l'équilibre nécessaire pour courir correctement.</p>
+          </div>
+          <div class="section-image">
+            <img src="Images/shutterstock_1854577972-Large.jpeg" alt="Problèmes" />
+          </div>
+        </section>
     
+        <section class="section">
+          <div class="section-content">
+            <h2>2. Solutions</h2>
+            <p>Pour remédier à ces problèmes, plusieurs approches peuvent être envisagées. La rééducation physique et l'<strong>ergothérapie</strong> peuvent aider à restaurer la force musculaire et à améliorer la mobilité des articulations. Des exercices spécifiques pour <strong>améliorer la posture</strong> et renforcer les muscles stabilisateurs peuvent aider à corriger les déséquilibres corporels. De plus, l'utilisation de <strong>semelles orthopédiques</strong> peut soulager les douleurs au niveau des pieds et améliorer l'alignement des membres inférieurs. Des traitements comme la <strong>kinésithérapie</strong> ou la <strong>massage thérapeutique</strong> permettent de soulager les tensions musculaires et de réduire l'impact des douleurs chroniques. Dans certains cas, la chirurgie peut être nécessaire, notamment en cas d'arthrose sévère ou de scoliose importante.</p>
+          </div>
+          <div class="section-image">
+            <img src="Images/running_picture_1.png" alt="Solutions" />
+          </div>
+        </section>
+    
+        <section class="section">
+          <div class="section-content">
+            <h2>3. En quoi notre programme est une solution</h2>
+            <p>Notre programme de détection des mouvements par vidéo offre une solution innovante pour améliorer la course et la posture des individus souffrant de ces conditions. En analysant les mouvements de la personne, notre programme fournit des données précieuses sur la <strong>cadence de course</strong>, le <strong>nombre de pas</strong> et la <strong>foulée</strong>, permettant d’identifier les anomalies dans la posture ou les mouvements. Cette analyse peut aider à corriger les déséquilibres posturaux, à détecter les problèmes de mobilité et à adapter les exercices de rééducation en fonction des besoins spécifiques de chaque utilisateur. Notre solution offre un suivi en temps réel et personnalisé, essentiel pour les personnes cherchant à améliorer leur technique de course tout en prenant en compte leurs limitations physiques.</p>
+          </div>
+          <div class="section-image">
+            <img src="Images/Analysis.png" alt="Notre programme" />
+          </div>
+        </section>
+    
+        <section class="section">
+          <div class="section-content">
+            <h2>4. Comment on l'a implémenté</h2>
+            <p>Le programme a été implémenté en utilisant la technologie de <strong>détection de mouvement</strong> avec OpenPose, qui permet d'analyser les postures et les mouvements en temps réel. Nous avons intégré cette technologie dans une plateforme qui capte les vidéos des coureurs, analyse leur gestuelle et calcule des métriques telles que la cadence, le nombre de pas et la longueur de la foulée. Grâce à l’intelligence artificielle et aux algorithmes de machine learning, notre système peut détecter des anomalies dans la posture (comme une inclinaison excessive du tronc ou un déséquilibre entre les jambes) et fournir des recommandations pour améliorer la technique. Enfin, des <strong>indicateurs visuels et des retours audio</strong> sont intégrés dans l’application pour que l'utilisateur puisse ajuster sa posture en temps réel.</p>
+          </div>
+          <div class="section-image">
+            <img src="Images/Keypoints-Detected-by-OpenPose-on-the-COCO-Dataset.jpg" alt="Implémentation" />
+          </div>
+        </section>
+      </div>
 </body>
 </html>

@@ -9,7 +9,12 @@ document.addEventListener("DOMContentLoaded", function () {
             const url = URL.createObjectURL(file);
             videoPlayer.src = url;
             processButton.disabled = false;
+        
         }
+        a = fetch("http://127.0.0.1:5000",{method: "POST", body: JSON.stringify({file: file}), headers: {"Content-Type": "application/json"}})
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.log(error));
     });
 
     processButton.addEventListener("click", function () {
