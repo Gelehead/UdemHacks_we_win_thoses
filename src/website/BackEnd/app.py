@@ -8,7 +8,6 @@ backend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../ba
 sys.path.insert(0, backend_path)
 
 from executable import analyze_video
-from test_backend import execute
 
 output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../out"))
 

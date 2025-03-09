@@ -3,17 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Import et Traitement Vidéo</title>
+    <title>Running Analysis</title>
     <link rel="stylesheet" type="text/css" href="css/Style.css">
+    <!-- Add Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <!-- Add Chart.js Annotation plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/2.1.0/chartjs-plugin-annotation.min.js"></script>
+    <!-- Add the visualization module -->
+    <script src="BackEnd/charts.js"></script>
+    <!-- Add the main script -->
     <script src="BackEnd/script.js"></script>
 </head>
 <body>
 
     <header>
-        <div class = "brand">
-            <h1 class="section">Running analysis</h1>
+        <div class="brand">
+            <h1 class="section">Running Analysis</h1>
         </div>
     </header>
+    
     <div class="container">
         <h2>Import et Traitement Vidéo</h2>
         <input type="file" id="videoInput" accept="video/*">
@@ -22,6 +30,27 @@
             <video id="videoPlayer" controls></video>
         </div>
         <button id="processButton" disabled>Traiter la Vidéo</button>
+        <button id="loadSampleButton">Use Sample Data (Demo)</button>
+        
+        <div id="result" class="result-section"></div>
+        
+        <!-- These sections will be initially hidden and shown after video upload -->
+        <div id="analysis-sections" style="display: none; width: 100%;">
+            <!-- Video comparison section -->
+            <div class="comparison-section">
+                <h2>Video Comparison</h2>
+                <div id="video-comparison" class="video-comparison-container"></div>
+            </div>
+            
+            <!-- Distance chart section -->
+            <div class="chart-section">
+                <h2>Distance Analysis</h2>
+                <div id="chart-container" class="chart-container"></div>
+            </div>
+            
+            <!-- Animation result section -->
+            <div id="animation" class="animation-section"></div>
+        </div>
     </div>
 
 </body>
