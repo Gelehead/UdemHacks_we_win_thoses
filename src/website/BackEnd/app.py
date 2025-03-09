@@ -1,6 +1,15 @@
 from flask import Flask, request, jsonify, url_for, render_template
 from flask_cors import CORS
 import os
+import sys
+
+# adds the path to main data treatment backend
+backend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../src/backend"))
+sys.path.insert(0, backend_path)
+
+print(backend_path)
+
+from backend import exec
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
@@ -20,7 +29,7 @@ def upload_video():
     file_path = f"{UPLOAD_FOLDER}/{file.filename}"
     file.save(file_path)
     
-    
+    print(exec(file_path))
 
     print(f"File received: {file.filename}, saved to {file_path}")
 
