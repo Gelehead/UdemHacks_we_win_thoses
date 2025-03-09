@@ -38,44 +38,40 @@ def analyze_video(video_path, output_dir="."):
         # Extract filename without extension
         video_filename = os.path.splitext(os.path.basename(video_path))[0]
         
-        # Create json and videos directory if they don't exist
+        # Create json directory if it doesn't exist
         json_dir = os.path.join(output_dir, "json")
-        videos_dir = os.path.join(output_dir, "videos")
         
         if not os.path.exists(json_dir):
             os.makedirs(json_dir)
-        if not os.path.exists(videos_dir):
-            os.makedirs(videos_dir)
             
-        json_output_path = os.path.join(json_dir, f"{video_filename}.json")
-        video_output_path = os.path.join(videos_dir, f"{video_filename}.mp4")  # Changed extension to mp4 for videos
-
-        print("")
-        print("bbbbbbbbbbbbbbbbb")
-        print("")
+        # Temporary path for intermediate processing
+        temp_output_path = os.path.join(json_dir, f"{video_filename}_temp_data.json")
 
         # 1. Pose landmark extraction
-        process_video(video_path, json_output_path, "00111")  # Changed to json_output_path
+        process_video(video_path, temp_output_path, "00111")
         
-        print("")
-        print("cccccccccccccccc")
-        print("")
-
         # 2. Handling missing landmarks
-        frames_data = load_json(json_output_path)
+        frames_data = load_json(temp_output_path)
+        
+        # Clean up the temporary file after loading the data
+        if os.path.exists(temp_output_path):
+            os.remove(temp_output_path)
         filtered_data = filter_consecutive_frames(frames_data)
 
-        # Save filtered data to a new JSON file
-        filtered_json_path = os.path.join(json_dir, f"{video_filename}_filtered.json")
-        with open(filtered_json_path, 'w') as f:
+        # Process filtered data in memory without saving to a separate file
+        filtered_data = filter_consecutive_frames(frames_data)
+        
+        # 3. Stride analysis - use the in-memory filtered data
+        # Create a temporary file for stride analysis if needed by get_data
+        temp_filtered_path = os.path.join(json_dir, f"{video_filename}_temp.json")
+        with open(temp_filtered_path, 'w') as f:
             json.dump(filtered_data, f, indent=4)
             
-        print("")
-        print("dddddddddddddddd")
-        print("")
-
-        # 3. Stride analysis
-        step_count, peak_indices, distances = get_data(filtered_json_path)
+        step_count, peak_indices, distances = get_data(temp_filtered_path)
+        
+        # Clean up the temporary file
+        if os.path.exists(temp_filtered_path):
+            os.remove(temp_filtered_path)
 
         # Convert numpy types to standard Python types for JSON serialization
         if isinstance(step_count, np.integer):
@@ -84,11 +80,11 @@ def analyze_video(video_path, output_dir="."):
         results = {
             "step_count": step_count,
             "peak_indices": peak_indices.tolist() if isinstance(peak_indices, np.ndarray) else peak_indices,
-            "distances": distances.tolist() if isinstance(distances, np.ndarray) else distances,
-            "filtered_json_path": filtered_json_path
+            "distances": distances.tolist() if isinstance(distances, np.ndarray) else distances
         }
         
-        results_path = os.path.join(json_dir, "results.json")
+        # Save with the same name as the video file
+        results_path = os.path.join(json_dir, f"{video_filename}.json")
         with open(results_path, "w") as json_file:
             json.dump(results, json_file, cls=NumpyEncoder, indent=4)
 

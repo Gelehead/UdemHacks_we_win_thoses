@@ -28,14 +28,11 @@ def upload_video():
     if file.filename == '':
         return jsonify({"error": "No selected file"}), 400
 
-    # Create necessary directories
+    # Create necessary directory
     json_dir = os.path.join(UPLOAD_FOLDER, "json")
-    videos_dir = os.path.join(UPLOAD_FOLDER, "videos")
     
     if not os.path.exists(json_dir):
         os.makedirs(json_dir)
-    if not os.path.exists(videos_dir):
-        os.makedirs(videos_dir)
     
     file_path = os.path.join(UPLOAD_FOLDER, file.filename)
     
