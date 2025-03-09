@@ -4,12 +4,12 @@ import os
 import sys
 
 # adds the path to main data treatment backend
-backend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../src/backend"))
+backend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../backend"))
 sys.path.insert(0, backend_path)
 
 print(backend_path)
 
-from backend import exec
+from test_backend import exec
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
