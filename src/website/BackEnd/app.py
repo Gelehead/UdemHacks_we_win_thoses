@@ -28,7 +28,16 @@ def upload_video():
     if file.filename == '':
         return jsonify({"error": "No selected file"}), 400
 
-    file_path = f"{UPLOAD_FOLDER}/{file.filename}"
+    # Create necessary directories
+    json_dir = os.path.join(UPLOAD_FOLDER, "json")
+    videos_dir = os.path.join(UPLOAD_FOLDER, "videos")
+    
+    if not os.path.exists(json_dir):
+        os.makedirs(json_dir)
+    if not os.path.exists(videos_dir):
+        os.makedirs(videos_dir)
+    
+    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
     
     # Save the file first
     file.save(file_path)
@@ -39,8 +48,9 @@ def upload_video():
 
     print(f"File received: {file.filename}, saved to {file_path}", flush=True)
 
-    # Now call your analysis function
-    result = analyze_video(UPLOAD_FOLDER, f"{UPLOAD_FOLDER}/{"json"}/{file.filename}")
+    # Now call your analysis function with the correct parameters
+    # Pass the full file path as first argument and output directory as second
+    result = analyze_video(file_path, UPLOAD_FOLDER)
     return jsonify(result)
 
 
