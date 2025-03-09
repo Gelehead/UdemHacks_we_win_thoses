@@ -40,17 +40,23 @@ def calculate_ground_time_from_json(json_file, frame_rate=10, threshold=0.1):
         if all(is_feet_on_ground(landmark, threshold) for landmark in right_landmarks):
             ground_time_right += 1  # Increase ground time count based on frame
 
-    # Convert frame count to time in seconds
-    gt_rights = (ground_time_right / frame_rate)*1000
-    gt_lefts = (ground_time_left / frame_rate)*1000
-    return [gt_rights, gt_lefts]
+    # Convert frame count to time in milliseconds
+    gt_rights = (ground_time_right / frame_rate) * 1000
+    gt_lefts = (ground_time_left / frame_rate) * 1000
+    total_time = gt_rights + gt_lefts
+    
+    # Return the results as a dictionary
+    return {
+        "right": gt_rights,
+        "left": gt_lefts,
+        "total": total_time
+    }
 
 # Function to parse command-line arguments
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Calculate ground time from MediaPipe pose JSON data.")
     parser.add_argument('json_file', help="Path to the JSON file containing pose landmarks data")
     return parser.parse_args()
-
 
 # Main function
 def main():
@@ -60,11 +66,8 @@ def main():
     # Calculate ground time from the provided JSON file
     ground_time = calculate_ground_time_from_json(args.json_file)
     
-    # Output the result
-    print(f"Ground time right: {ground_time[0]//10:.2f} ms")
-    print(f"Ground time left: {ground_time[1]//10:.2f} ms")
-    print(f"Ground time average: {(ground_time[0] + ground_time[1])/2//10:.2f} ms")
-
+    # Output the result in JSON format
+    ##print(json.dumps(ground_time, indent=4))
 
 # Run the main function if the script is executed
 if __name__ == "__main__":
