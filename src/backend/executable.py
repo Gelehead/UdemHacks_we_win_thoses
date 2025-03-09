@@ -3,6 +3,7 @@ import json
 from pose_extraction import process_video
 from strideanalalysis import get_data
 from noLandmarks import filter_consecutive_frames, load_json
+import numpy as np
 
 
 def analyze_video(video_path, output_dir="."):
@@ -24,15 +25,15 @@ def analyze_video(video_path, output_dir="."):
     try:
         # Extract filename without extension
         video_filename = os.path.splitext(os.path.basename(video_path))[0]
-        json_output_path = os.path.join(output_dir, f"{video_filename}.json")
+        json_output_path = os.path.join(output_dir, f"/json/{video_filename}.json")
+        video_output_path = os.path.join(output_dir, f"/videos/{video_filename}.json")
 
         # 1. Pose landmark extraction
-        process_video(video_path, json_output_path, "00111")  # Using default filters
+        process_video(video_path, video_output_path, "00111")  # Using default filters
 
         # 2. Handling missing landmarks
         frames_data = load_json(json_output_path)
         filtered_data = filter_consecutive_frames(frames_data)
-        # TODO:delete old one
 
         # Save filtered data to a new JSON file
         filtered_json_path = os.path.join(output_dir, f"{video_filename}_filtered.json")
@@ -43,11 +44,15 @@ def analyze_video(video_path, output_dir="."):
         step_count, peak_indices, distances = get_data(filtered_json_path)
 
         results = {
-            "step_count": step_count, #int
-            "peak_indices": peak_indices, #
-            "distances": distances,
-            "json_path": filtered_json_path
+            "step_count": step_count,
+            "peak_indices": peak_indices.tolist() if isinstance(peak_indices, np.ndarray) else peak_indices,
+            "distances": distances.tolist() if isinstance(distances, np.ndarray) else distances,
+            "filtered_data": filtered_data.tolist() if isinstance(filtered_data, np.ndarray) else filtered_data
         }
+        
+        output_path = os.path.join(os.path.dirname(__file__), "..", "..", "..", "out", "json", "results.json")
+        with open("results.json", "w") as json_file:
+            json.dump(results, json_file, indent=4)
 
         return results
 

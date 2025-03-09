@@ -7,12 +7,13 @@ import sys
 backend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../backend"))
 sys.path.insert(0, backend_path)
 
-print(backend_path)
+from executable import analyze_video
 
-from test_backend import exec
+output_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../out"))
+
 
 app = Flask(__name__)
-UPLOAD_FOLDER = 'uploads'
+UPLOAD_FOLDER = output_path + "/videos"
 ALLOWED_EXTENSIONS = {'mp4', 'mov', 'avi'}
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -29,7 +30,7 @@ def upload_video():
     file_path = f"{UPLOAD_FOLDER}/{file.filename}"
     file.save(file_path)
     
-    print(exec(file_path))
+    results = analyze_video(file_path, output_path)
 
     print(f"File received: {file.filename}, saved to {file_path}")
 
